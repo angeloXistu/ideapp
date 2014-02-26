@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.javatechig.ideapp1.R;
 import com.javatechig.ideapp1.asynctaask.ImageDownloaderTask;
 import com.javatechig.ideapp1.model.FeedItem;
@@ -69,4 +70,18 @@ public class FeedDetailsActivity extends Activity {
 		startActivity(Intent.createChooser(sendIntent, "Share using"));
 
 	}
+	
+    @Override
+    public void onStart() {
+      super.onStart();
+      // The rest of your onStart() code.
+      EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+      super.onStop();
+      // The rest of your onStop() code.
+      EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
 }

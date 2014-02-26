@@ -34,7 +34,7 @@ import com.javatechig.ideapp1.R;
 import com.javatechig.ideapp1.model.FeedItem;
 import com.parse.Parse;
 import com.parse.PushService;
-
+import com.google.analytics.tracking.android.EasyTracker;
 public class FeedListActivity extends Activity {
 
 	private ArrayList<FeedItem> feedList = null;
@@ -54,6 +54,8 @@ public class FeedListActivity extends Activity {
 
 		
 		String url = "http://ideapp.web44.net/api/get_posts/";
+		
+		
 		
 		if (!verificaConexao()) {
 			alertConexao();
@@ -88,6 +90,21 @@ public class FeedListActivity extends Activity {
         alerta.show();
     }
 	
+    
+    @Override
+    public void onStart() {
+      super.onStart();
+      // The rest of your onStart() code.
+      EasyTracker.getInstance(this).activityStart(this);  // Add this method.
+    }
+
+    @Override
+    public void onStop() {
+      super.onStop();
+      // The rest of your onStop() code.
+      EasyTracker.getInstance(this).activityStop(this);  // Add this method.
+    }
+
 	/*
 	 * Função para verificar existência de conexão com a internet
 	 */
