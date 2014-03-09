@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -14,6 +15,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -28,82 +30,152 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.javatechig.ideapp1.R;
-import com.javatechig.ideapp1.model.FeedItem;
-import com.parse.Parse;
-import com.parse.PushService;
 import com.google.analytics.tracking.android.EasyTracker;
+import com.javatechig.ideapp1.model.FeedItem;
+
 public class FeedListActivity extends Activity {
 
 	private ArrayList<FeedItem> feedList = null;
 	private ProgressBar progressbar = null;
 	private ListView feedListView = null;
+	
+/*
+	public void onPause() {
+		super.onPause();
+		printaNaTelaPause();
+	}
 
+	public void onResume() {
+		super.onResume();
+		printaNaTelaResume();
+	}
+
+	public void onDestroy() {
+		super.onDestroy();
+		printaNaTelaDestroy();
+	}
+*/
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_posts_list);
 
 		// parser
-		Parse.initialize(this, "50ba7jTsCIT6hpI7fm4IIgpkcpnhTJCYKl869qpM",
-				"25Il4cGq15wXyOQ51a23F7dS9SbweFLBALvO5GPS");
-		PushService.setDefaultPushCallback(this, FeedListActivity.class);
+//		Parse.initialize(this, "50ba7jTsCIT6hpI7fm4IIgpkcpnhTJCYKl869qpM",
+	//			"25Il4cGq15wXyOQ51a23F7dS9SbweFLBALvO5GPS");
+		//PushService.setDefaultPushCallback(this, FeedListActivity.class);
+		// Save the current installation.
+		//ParseInstallation.getCurrentInstallation().saveInBackground();
 		// end-parser
 
-		
 		String url = "http://ideapp.web44.net/api/get_posts/";
-		
-		
-		
+
 		if (!verificaConexao()) {
 			alertConexao();
-		}
-		else{
+		} else {
 			progressbar = (ProgressBar) findViewById(R.id.progressBar);
 			new DownloadFilesTask().execute(url);
 		}
 	}
-	
+
 	/*
 	 * Função que avisa da conexao com a Internet inexistente
 	 */
 	private AlertDialog alerta;
-    private void alertConexao() {
-        //Cria o gerador do AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        //define o titulo
-        builder.setTitle("Conexão");
-        //define a mensagem
-        builder.setMessage("Favor verificar sua conexão com a Internet");
-        //define um botão como positivo
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface arg0, int arg1) {
-            	 finish();
-                 System.exit(0);
-            }
-        });
-        //cria o AlertDialog
-        alerta = builder.create();
-        //Exibe
-        alerta.show();
-    }
-	
-    
-    @Override
-    public void onStart() {
-      super.onStart();
-      // The rest of your onStart() code.
-      EasyTracker.getInstance(this).activityStart(this);  // Add this method.
-    }
 
-    @Override
-    public void onStop() {
-      super.onStop();
-      // The rest of your onStop() code.
-      EasyTracker.getInstance(this).activityStop(this);  // Add this method.
-    }
+	private void alertConexao() {
+		// Cria o gerador do AlertDialog
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// define o titulo
+		builder.setTitle("Conexão");
+		// define a mensagem
+		builder.setMessage("Favor verificar sua conexão com a Internet");
+		// define um botão como positivo
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface arg0, int arg1) {
+				finish();
+				System.exit(0);
+			}
+		});
+		// cria o AlertDialog
+		alerta = builder.create();
+		// Exibe
+		alerta.show();
+	}
+	
+	private void printaNaTelaDestroy() {
+		// Cria o gerador do AlertDialog
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// define o titulo
+		builder.setTitle("Destroy");
+		// define a mensagem
+		builder.setMessage("Destroy");
+		// define um botão como positivo
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface arg0, int arg1) {
+				//finish();
+				//System.exit(0);
+			}
+		});
+		// cria o AlertDialog
+		alerta = builder.create();
+		// Exibe
+		alerta.show();
+	}
+	private void printaNaTelaResume() {
+		// Cria o gerador do AlertDialog
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// define o titulo
+		builder.setTitle("Resume");
+		// define a mensagem
+		builder.setMessage("Resume");
+		// define um botão como positivo
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface arg0, int arg1) {
+				//finish();
+				//System.exit(0);
+			}
+		});
+		// cria o AlertDialog
+		alerta = builder.create();
+		// Exibe
+		alerta.show();
+	}
+	private void printaNaTelaPause() {
+		// Cria o gerador do AlertDialog
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// define o titulo
+		builder.setTitle("Pause");
+		// define a mensagem
+		builder.setMessage("pause");
+		// define um botão como positivo
+		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface arg0, int arg1) {
+				//finish();
+				//System.exit(0);
+			}
+		});
+		// cria o AlertDialog
+		alerta = builder.create();
+		// Exibe
+		alerta.show();
+	}
+
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		// The rest of your onStart() code.
+		EasyTracker.getInstance(this).activityStart(this); // Add this method.
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		// The rest of your onStop() code.
+		EasyTracker.getInstance(this).activityStop(this); // Add this method.
+	}
 
 	/*
 	 * Função para verificar existência de conexão com a internet
