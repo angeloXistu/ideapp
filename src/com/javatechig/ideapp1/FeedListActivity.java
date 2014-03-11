@@ -309,9 +309,27 @@ public class FeedListActivity extends Activity {
 					JSONArray attachments = post.getJSONArray("attachments");
 
 					if (null != attachments && attachments.length() > 0) {
-						JSONObject attachment = attachments.getJSONObject(0);
-						if (attachment != null)
-							item.setAttachmentUrl(attachment.getString("url"));
+						//JSONObject attachment = attachments.getJSONObject(0);
+						//if (attachment != null)
+						
+						
+						/* 
+						 * Método importante que ajusta somente pega a imagem thumbnail
+						 * oferecida pelo site Wordpress setado por lah...
+						 * Caso aumente de mais o tamanho da imagem, ira dar estouro de memoria
+						 * e crash do aplicativo, por isso tem q deixar pegando thumbs de ateh 300x300
+						 */
+						for(int j = 0; j < attachments.length(); j++){
+		                    JSONObject d = attachments.getJSONObject(j);
+
+
+		                    JSONObject images = d.getJSONObject("images");
+
+		                    JSONObject thumbnail = images.getJSONObject("medium");
+		                    //String url = thumbnail.getString("url");
+							
+		                    item.setAttachmentUrl(thumbnail.getString("url"));
+						}
 					}
 
 					feedList.add(item);
